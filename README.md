@@ -40,8 +40,8 @@ Thoughts:
 
 >Why use the index of the element as value, the value of the element as key when putting it into the HashMap, instead of the other way?
 The key of this algorithm is:
-1. Use HashMap.containsKey() to check if it contains the complementary number.
-2. Use HashMap.get() to get the index of the complementary number
+>1. Use HashMap.containsKey() to check if it contains the complementary number.
+>2. Use HashMap.get() to get the index of the complementary number
 
 >If we store the data in the other way. The first step could be replaced using HashMap.containsValue(), which is fine. However, the second part would be a problem since there is no HashMap.getValue(), or at least there is no efficent way to implement HashMap.containsValue(). The efficiency of hashMap comes from the hush function which works on the key instead of the value. 
 
