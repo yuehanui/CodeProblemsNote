@@ -47,6 +47,8 @@ The key of this algorithm is:
 >If we store the data in the other way. The first step could be replaced using HashMap.containsValue(), which is fine. However, the second part would be a problem since there is no HashMap.getValue(), or at least there is no efficient way to implement HashMap.containsValue(). The efficiency of hashMap comes from the hush function which works on the key instead of the value.
 
 
+
+
 ### Add Two Numbers
 Problem:
 > You are Given two non-empty linked lists representing two non-negative integer. The digits are stored in revere order and each node contains a single digit. Add the two numbers and return it as a linked list.
@@ -83,3 +85,82 @@ public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 	return head.next;
 }
 ```
+
+
+
+### Longest Substring Without Repeating Characters.
+
+Problem:
+> Given a string, find the length of the longest substring without repeating characters
+
+#### Solution 1:
+思路：
+> Initialize a HashSet to store the characters.
+Use a sliding window[```i```, ```j```] to representing the substring between index ```i``` and index ```j```(inclusively).
+Set ```i```, ```j``` and ```ans``` to 0
+Iterate through the string and for each character in the string:
+>> if the character is found in the HashSet:
+>>> remove character at index ```i``` from the HashSet
+>>> ```i``` = ```i``` + 1
+>>
+>> else:
+>>>add the characters to the HashSet
+>>> ```j``` = ```j``` + 1
+>>>set ```ans``` to max(```ans```, ```j```-```i```);
+
+>return ```ans```
+
+Java Code:
+```
+public int lengthOfLongestSubstring(String s) {
+        Set<Character> chars = new HashSet<>();
+        int i = 0, j = 0, ans = 0;
+        int length = s.length();
+        while (j < length){
+            if (chars.contains(s.charAt(j))){
+                chars.remove(s.charAt(i));
+                i++;
+            } else {
+                chars.add(s.charAt(j));
+                j ++;
+                ans = Math.max(ans, j-i);
+            }
+        }
+        return ans;
+    }
+```
+
+Complexity Analysis:
+> In the worst case, that is, all characters in the string are the same, both the "if" condition and "else" condition will run n times(n = length of string). So the whole while loop will run 2n times.
+So the time complexity = O(2n) = O(n)
+>
+> In the worst case, that is, all characters in the string are unique, every characters in the string will be added to the HashSet. So the length of the string n will be a upper bound for space complexity.
+If the length of the string is larger than the number of total unique characters of the specific charset, the space complexity will be upper bounded by the number of total unique characters m.
+So the space complexity = O(min(n,m))
+
+#### Solution 2
+思路
+> Optimized from solution 1. Instead of using a HashSet to store the characters in solution 1, use a HashMap to store the characters as key and their index as value. Then when iterating the string, if the characters is found in the HashMap, we can get its index where the character is found and move the ```i``` cursor to the character right after it. This will give a better time complexity than solution 1.
+
+Java Code:
+```public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> chars = new HashMap<>();
+        int i = 0,j = 0, ans = 0;
+        int length = s.length();
+        while (j < length) {
+            if (chars.containsKey(s.charAt(j))) {
+                i = Math.max(i, chars.get(s.charAt(j))+1);
+
+            }
+            chars.put(s.charAt(j),j);
+            j++;
+            ans = Math.max(ans, j-i);
+        }
+        return ans;
+    }
+```
+
+Complexity Analysis
+> In the worst case, which is all characters in the string are the same, the while loop will run n times(n = length of string).
+So the time complexity = O(n)
+> The space complexity is the same as solution 1, O(min(m,n));
