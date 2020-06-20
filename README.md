@@ -164,3 +164,36 @@ Complexity Analysis
 > In the worst case, which is all characters in the string are the same, the while loop will run n times(n = length of string).
 So the time complexity = O(n)
 > The space complexity is the same as solution 1, O(min(m,n));
+
+### Find index in sorted array
+
+Problem:
+
+>Given a sorted array of integers, return the index of the given key. Return ```-1``` if not found.
+
+思路：
+
+> Use divide and Conquer strategy.
+>
+> Since the array is sorted, we can start by comparing the search key with the integer at the middle of the array. If the search key is equal to the middle key, we find it and we can return the index of the middle key. Else, if the search key is smaller than the middle key of the array. We search it using the same strategy in the left half of the array. Otherwise, we search it in the right half in the array.
+
+Java Code:
+
+```
+static int binSearch(int[] a, int key) {
+    int left = 0, right = a.length-1;
+    while (left <= right) {
+      int mid = (left + right) / 2;
+      if (a[mid] == key) return mid;
+      else if (key < a[mid]) right = mid -1;
+      else left = mid+1;
+    }
+    return -1;
+  }
+```
+
+Complexity Analysis:
+
+> This algorithm uses divide and conquer algorithm. The while loop will runs ```logN``` times. So the time complexity is O(logN)
+>
+> The space complexity is O(1) since fixed amount of space, specifically, ```left```,```right``` and```mid```, is used.
