@@ -25,7 +25,7 @@ Algorithm:
 
 Java Code:
 
-```
+```java
 public int[] twoSum(int[] nums, int target) {
 	Map<Integer, Integer> theMap = new HashMap<>();
 	for( int i = 0; i < nums.length; i++) {
@@ -62,7 +62,7 @@ Example:
 > Simply sum two numbers digit by digit starting from the least-significant digit, which is the heads of the linked lists. For each addition on two digits, if the summation exceed 10, for example the summation is 12,1 will be carried to the more significant digit and the current digit will be set to 2. Just as you do the kindergarten math.
 
 Java Code:
-```
+```java
 public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 	ListNode head = new ListNode(0);
 	ListNode list1 = l1, list2 = l2, currNode = head;
@@ -111,7 +111,7 @@ Iterate through the string and for each character in the string:
 >return ```ans```
 
 Java Code:
-```
+```java
 public int lengthOfLongestSubstring(String s) {
         Set<Character> chars = new HashSet<>();
         int i = 0, j = 0, ans = 0;
@@ -143,7 +143,7 @@ So the space complexity = O(min(n,m))
 > Optimized from solution 1. Instead of using a HashSet to store the characters in solution 1, use a HashMap to store the characters as key and their index as value. Then when iterating the string, if the characters is found in the HashMap, we can get its index where the character is found and move the ```i``` cursor to the character right after it. This will give a better time complexity than solution 1.
 
 Java Code:
-```public int lengthOfLongestSubstring(String s) {
+```java
         Map<Character, Integer> chars = new HashMap<>();
         int i = 0,j = 0, ans = 0;
         int length = s.length();
@@ -179,7 +179,7 @@ Problem:
 
 Java Code:
 
-```
+```java
 static int binSearch(int[] a, int key) {
     int left = 0, right = a.length-1;
     while (left <= right) {
@@ -197,3 +197,69 @@ Complexity Analysis:
 > This algorithm uses divide and conquer algorithm. The while loop will runs ```logN``` times. So the time complexity is O(logN)
 >
 > The space complexity is O(1) since fixed amount of space, specifically, ```left```,```right``` and```mid```, is used.
+
+
+
+
+
+### Find Maximum in Sliding Window
+
+#### Problem:
+
+> Given a large array of integers and a window of size w, find the current maximum value in the window as the window slides through the array.
+
+#### Example:
+
+![Screen Shot 2020-06-20 at 6.36.25 PM](img/Screen Shot 2020-06-20 at 6.36.25 PM.png)
+
+#### 思路：
+
+> Use a deque data structure to approach the problem. A Deque is a double head queue, which you could add and remove item from its both end in O(1) time.
+>
+> The following algorithm will maintain a deque that always has the index of the largest number in the current sliding window at it head.
+>
+> Iterate through the array, for each iteration, 
+>
+> 1. first check if the last item stored in the deque is smaller than the current number. Keep removing items from the end of the deque until its last item is larger than the current number. 
+>
+> 2. Then check if the item at the head of the deque are still in the sliding windows. Remove the item at the head if it is no longer in the sliding windows. 
+>
+> > (Notice that for each number, there are two possible way to get out of the deque. If the number is the largest number of the previous sliding window, and it is larger than the current number, and it is also at the leftest position of the sliding windows, then it will be removed from the head of the deque since it will no longer be in the sliding window at this iteration. Otherwise, it will be removed from the end of the deque when a number larger than it enters) 
+>
+> 3. Then add the current number to the end of the deque.
+
+Java Code:
+
+``` java
+public static ArrayDeque<Integer> findMaxSlidingWindow(int[] arr, int windowSize) {
+    ArrayDeque<Integer> result = new ArrayDeque<>(); 
+    ArrayDeque<Integer> window = new ArrayDeque<>();
+  
+    if (arr.length ==0 || arr.length<windowSize) return result;
+    
+    for (int i = 0; i < windowSize; i++){
+      while (!window.isEmpty() && arr[i] > arr[window.peekLast()]){
+        window.removeLast();
+      } 
+      window.addLast(i);
+    }
+    result.add(arr[window.peekFirst()]);
+    for (int i = windowSize; i < arr.length; i++){
+      while (!window.isEmpty() && arr[i] > arr[window.peekLast()]) {
+        window.removeLast();
+      }
+      if (!window.isEmpty() && window.peekFirst() <= i-windowSize){
+        window.removeFirst();
+      }
+      window.addLast(i);
+      result.add(arr[window.peekFirst()]);
+    }
+    return result;
+  }
+```
+
+#### Complexity Analysis
+
+> The array is iterated once. Each item in the array entered the deque once. So the time complexity is O(n)
+>
+> The item in the deque will not exceed the size of the sliding windows ```w```, so the memory complexity is O(m)
