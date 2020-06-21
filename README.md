@@ -164,3 +164,105 @@ Complexity Analysis
 > In the worst case, which is all characters in the string are the same, the while loop will run n times(n = length of string).
 So the time complexity = O(n)
 > The space complexity is the same as solution 1, O(min(m,n));
+<<<<<<< Updated upstream
+=======
+
+### Find index in sorted array
+
+Problem:
+
+>Given a sorted array of integers, return the index of the given key. Return ```-1``` if not found.
+
+思路：
+
+> Use divide and Conquer strategy.
+>
+> Since the array is sorted, we can start by comparing the search key with the integer at the middle of the array. If the search key is equal to the middle key, we find it and we can return the index of the middle key. Else, if the search key is smaller than the middle key of the array. We search it using the same strategy in the left half of the array. Otherwise, we search it in the right half in the array.
+
+Java Code:
+
+```java
+static int binSearch(int[] a, int key) {
+    int left = 0, right = a.length-1;
+    while (left <= right) {
+      int mid = (left + right) / 2;
+      if (a[mid] == key) return mid;
+      else if (key < a[mid]) right = mid -1;
+      else left = mid+1;
+    }
+    return -1;
+  }
+```
+
+Complexity Analysis:
+
+> This algorithm uses divide and conquer algorithm. The while loop will runs ```logN``` times. So the time complexity is O(logN)
+>
+> The space complexity is O(1) since fixed amount of space, specifically, ```left```,```right``` and```mid```, is used.
+
+
+
+
+
+### Find Maximum in Sliding Window
+
+Problem:
+
+> Given a large array of integers and a window of size w, find the current maximum value in the window as the window slides through the array.
+
+Example:
+
+![](img/image1)
+
+思路：
+
+> Use a deque data structure to approach the problem. A Deque is a double head queue, which you could add and remove item from its both end in O(1) time.
+>
+> The following algorithm will maintain a deque that always has the index of the largest number in the current sliding window at it head.
+>
+> Iterate through the array, for each iteration, 
+>
+> 1. first check if the last item stored in the deque is smaller than the current number. Keep removing items from the end of the deque until its last item is larger than the current number. 
+>
+> 2. Then check if the item at the head of the deque are still in the sliding windows. Remove the item at the head if it is no longer in the sliding windows. 
+>
+> > (Notice that for each number, there are two possible way to get out of the deque. If the number is the largest number of the previous sliding window, and it is larger than the current number, and it is also at the leftest position of the sliding windows, then it will be removed from the head of the deque since it will no longer be in the sliding window at this iteration. Otherwise, it will be removed from the end of the deque when a number larger than it enters) 
+>
+> 3. Then add the current number to the end of the deque.
+
+Java Code:
+
+``` java
+public static ArrayDeque<Integer> findMaxSlidingWindow(int[] arr, int windowSize) {
+    ArrayDeque<Integer> result = new ArrayDeque<>(); 
+    ArrayDeque<Integer> window = new ArrayDeque<>();
+  
+    if (arr.length ==0 || arr.length<windowSize) return result;
+    
+    for (int i = 0; i < windowSize; i++){
+      while (!window.isEmpty() && arr[i] > arr[window.peekLast()]){
+        window.removeLast();
+      } 
+      window.addLast(i);
+    }
+    result.add(arr[window.peekFirst()]);
+    for (int i = windowSize; i < arr.length; i++){
+      while (!window.isEmpty() && arr[i] > arr[window.peekLast()]) {
+        window.removeLast();
+      }
+      if (!window.isEmpty() && window.peekFirst() <= i-windowSize){
+        window.removeFirst();
+      }
+      window.addLast(i);
+      result.add(arr[window.peekFirst()]);
+    }
+    return result;
+  }
+```
+
+Complexity Analysis
+
+> The array is iterated once. Each item in the array entered the deque once. So the time complexity is O(n)
+>
+> The item in the deque will not exceed the size of the sliding windows ```w```, so the memory complexity is O(m)
+>>>>>>> Stashed changes
