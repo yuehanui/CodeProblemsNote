@@ -162,10 +162,11 @@ Java Code:
 
 Complexity Analysis
 > In the worst case, which is all characters in the string are the same, the while loop will run n times(n = length of string).
-So the time complexity = O(n)
+> So the time complexity = O(n)
 > The space complexity is the same as solution 1, O(min(m,n));
-<<<<<<< Updated upstream
-=======
+>
+> <<<<<<< Updated upstream
+> =======
 
 ### Find index in sorted array
 
@@ -265,4 +266,5 @@ Complexity Analysis
 > The array is iterated once. Each item in the array entered the deque once. So the time complexity is O(n)
 >
 > The item in the deque will not exceed the size of the sliding windows ```w```, so the memory complexity is O(m)
->>>>>>> Stashed changes
+>
+> 
