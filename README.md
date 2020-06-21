@@ -212,7 +212,7 @@ Problem:
 
 Example:
 
-![](img/image1)
+![](img/image1.png)
 
 思路：
 
@@ -265,4 +265,3 @@ Complexity Analysis
 > The array is iterated once. Each item in the array entered the deque once. So the time complexity is O(n)
 >
 > The item in the deque will not exceed the size of the sliding windows ```w```, so the memory complexity is O(m)
->>>>>>> Stashed changes
