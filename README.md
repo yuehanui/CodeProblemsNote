@@ -162,7 +162,7 @@ Java Code:
 
 Complexity Analysis
 > In the worst case, which is all characters in the string are the same, the while loop will run n times(n = length of string).
-So the time complexity = O(n)
+> So the time complexity = O(n)
 > The space complexity is the same as solution 1, O(min(m,n));
 
 ### Find index in sorted array
@@ -204,27 +204,27 @@ Complexity Analysis:
 
 ### Find Maximum in Sliding Window
 
-#### Problem:
+Problem:
 
 > Given a large array of integers and a window of size w, find the current maximum value in the window as the window slides through the array.
 
-#### Example:
+Example:
 
-![Screen Shot 2020-06-20 at 6.36.25 PM](img/Screen Shot 2020-06-20 at 6.36.25 PM.png)
+![](img/image1.png)
 
-#### 思路：
+思路：
 
 > Use a deque data structure to approach the problem. A Deque is a double head queue, which you could add and remove item from its both end in O(1) time.
 >
 > The following algorithm will maintain a deque that always has the index of the largest number in the current sliding window at it head.
 >
-> Iterate through the array, for each iteration, 
+> Iterate through the array, for each iteration,
 >
-> 1. first check if the last item stored in the deque is smaller than the current number. Keep removing items from the end of the deque until its last item is larger than the current number. 
+> 1. first check if the last item stored in the deque is smaller than the current number. Keep removing items from the end of the deque until its last item is larger than the current number.
 >
-> 2. Then check if the item at the head of the deque are still in the sliding windows. Remove the item at the head if it is no longer in the sliding windows. 
+> 2. Then check if the item at the head of the deque are still in the sliding windows. Remove the item at the head if it is no longer in the sliding windows.
 >
-> > (Notice that for each number, there are two possible way to get out of the deque. If the number is the largest number of the previous sliding window, and it is larger than the current number, and it is also at the leftest position of the sliding windows, then it will be removed from the head of the deque since it will no longer be in the sliding window at this iteration. Otherwise, it will be removed from the end of the deque when a number larger than it enters) 
+> > (Notice that for each number, there are two possible way to get out of the deque. If the number is the largest number of the previous sliding window, and it is larger than the current number, and it is also at the leftest position of the sliding windows, then it will be removed from the head of the deque since it will no longer be in the sliding window at this iteration. Otherwise, it will be removed from the end of the deque when a number larger than it enters)
 >
 > 3. Then add the current number to the end of the deque.
 
@@ -232,15 +232,15 @@ Java Code:
 
 ``` java
 public static ArrayDeque<Integer> findMaxSlidingWindow(int[] arr, int windowSize) {
-    ArrayDeque<Integer> result = new ArrayDeque<>(); 
+    ArrayDeque<Integer> result = new ArrayDeque<>();
     ArrayDeque<Integer> window = new ArrayDeque<>();
-  
+
     if (arr.length ==0 || arr.length<windowSize) return result;
-    
+
     for (int i = 0; i < windowSize; i++){
       while (!window.isEmpty() && arr[i] > arr[window.peekLast()]){
         window.removeLast();
-      } 
+      }
       window.addLast(i);
     }
     result.add(arr[window.peekFirst()]);
@@ -258,7 +258,7 @@ public static ArrayDeque<Integer> findMaxSlidingWindow(int[] arr, int windowSize
   }
 ```
 
-#### Complexity Analysis
+Complexity Analysis
 
 > The array is iterated once. Each item in the array entered the deque once. So the time complexity is O(n)
 >
