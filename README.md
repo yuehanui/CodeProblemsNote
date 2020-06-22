@@ -263,3 +263,68 @@ Complexity Analysis
 > The array is iterated once. Each item in the array entered the deque once. So the time complexity is O(n)
 >
 > The item in the deque will not exceed the size of the sliding windows ```w```, so the memory complexity is O(m)
+
+
+
+### Search Rotated Array
+
+Problem:
+
+> Search a given number in a sorted array that has been rotated by some arbitrary number.
+
+Example:
+
+![image2](./img/image2.png)
+
+思路：
+
+> Solve it  using a  binary search algorithm with some modification. At least one half of the array is always sorted. If the number n lies within the sorted half of the array, then the problem is basically a binary search problem. Otherwise, split the unsored half of the array evenly and see if the number lies in the sorted half. Keep checking until it lies in the sorted half then do a traditional binary search.
+
+Java Code:
+
+```java
+static int binarySearchRotated(int[] arr,int key) {
+    int start = 0, end = arr.length-1;
+    int sortedSide; //indicate which half is sorted. 0 for left, 1 for right
+    while(true){
+      int mid = (start + end ) / 2;
+      // see which side is sorted
+      if (arr[mid] < arr[end]) sortedSide = 1;
+      else sortedSide = 0;
+
+      if (sortedSide == 0) { // left side is sorted
+        if (key >= arr[start] && key <= arr[mid]){ //lies in the sorted half
+          end = mid;	
+          break;
+        } else { // lies in the unsosrted half
+          start = mid +1;
+        }
+      } else { // right side is sorted
+        if (key >= arr[mid] && key <= arr[end]){//lies in the sorted half
+          start = mid;
+          break;
+        } else{ // lies in the unsosrted half
+          end = mid -1;
+        }
+      }
+    }
+
+    while (start <= end){  //regular binary search
+      int mid = (start + end) /2;
+      if (key == arr[mid]){
+        return mid;
+      } else if (key > arr[mid]){
+        start = mid + 1;
+      } else {
+        end = mid -1;
+      }
+    }
+    return -1;
+  }
+```
+
+Complexity Analysis:
+
+> The algorithm is based on binary search which cut the problem in half each iteration. So the time complexity is O(logN)
+>
+> The algorithm uses fixed extra space, so the space complexity is O(1)
