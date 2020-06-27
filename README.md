@@ -328,3 +328,115 @@ Complexity Analysis:
 > The algorithm is based on binary search which cut the problem in half each iteration. So the time complexity is O(logN)
 >
 > The algorithm uses fixed extra space, so the space complexity is O(1)
+
+
+
+### 1-bit & 2-bit character
+
+Problem:
+
+> We have two special characters. The first character can be represented by one bit ```0```, the second character can be represented by two bits ( ```10``` or ```11```).
+>
+> Now given a string represented by several bits. Return whether the last character must be a 1-bit character or not. The given string  will always ends with a ```0```.
+
+Example:
+
+> Input: [1, 0, 0]        Output: True
+>
+> Input: [1, 1, 1, 0]    Output: False
+
+#### Solution 1:
+
+思路:
+
+> Iterate through the string. For each number ,
+>
+> >  if it is```1```, the character is represents has 2 bits, which is the ```1``` itself and the number follows it. So we can increase the pointer by 2.
+> >
+> > Othwise, the character is represented by 1 bits,which is the ```0``` itself. So we incease the pointer by 1.
+>
+> If the pointer reaches the index of the last bit, then the last bit is by itself, so the answer is True. Otherwise, the answer is False since the last bit is the second bit of a character.
+
+Java Code:
+
+```java
+public boolean isOneBitCharacter(int[] bits) {
+  int p = 0;
+  while (p< bits.length-1){
+    p += (1 + bits[p]);
+  }
+  return p == bits.length-1;
+}
+```
+
+Complexity Analysis:
+
+> The string is iterated once so the time complexity is O(n) which n is the length of bits.
+>
+> The space complexity is O(1), the space used by ```p```, the pointer
+
+#### Solution 2:
+
+思路:
+
+> A number 0 is always an end of a character. Find the second-last ```0``` in the string, then count the ```1```s  bewteen it and the last bit (which is also a ```0```). If there are even number of  ```1```s, then the last bit is by it self and the answer True. Otherwise, the last bit is the second bit of a two bit character, and the answer is False.
+
+Java Code:
+
+```java
+public boolean isOneBitCharacter(int[] bits) {
+  int p = bits.length-2;
+  while (p >= 0 && bits[p]>0) p --;
+  return (bits.length - p) % 2 == 0;
+}
+```
+
+Complexity Analysis:
+
+> The time complexity is O(n).
+>
+> The space complexity is O(1). (The space of ```p```, the pointer.)
+
+
+
+### Find the Smallest Common Number
+
+Problem:
+
+> Given three positive integer arrays which  are sorted in ascendening order.
+>
+> Find the Smallest number that is  common in all three arrays. Return -1 if the smallest common number is not found.
+
+Example:
+
+> ![image3](./img/image3.png)
+
+思路：
+
+> Use three pointers. Each pointer points at the first digit of each array. If the numbers three pointers pointing at are equal, return the number. Otherwise, compare three numbers and move the pointer that is pointing at the smallest number among three to the right by one step.
+
+Java Code:
+
+```java
+static Integer findLeastCommonNumber(int[] arr1, int[] arr2, int[] arr3) {
+    //TODO: Write - Your - Code
+    int p1 = 0, p2 = 0, p3 = 0;
+    while (p1 < arr1.length && p2 < arr2.length && p3 < arr3.length){
+      if (arr1[p1] == arr2[p2] && arr1[p1] == arr3[p3]){
+        return arr1[p1];
+      }
+      if (arr1[p1] < arr2[p2]){
+        if (arr1[p1] < arr3[p3]) p1 ++;
+        else p3 ++;
+      } else p2 ++;
+    }
+    return -1;
+  }
+```
+
+Complexity Analysis:
+
+> The time complexity is O(n) since each array are iterated once.
+>
+> The space complexity is O(1) since the otter space used (three pointers) is fixed.
+
