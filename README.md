@@ -440,3 +440,50 @@ Complexity Analysis:
 >
 > The space complexity is O(1) since the otter space used (three pointers) is fixed.
 
+
+
+### Rotate an Array by N element
+
+Problem:
+
+> Given a array of integers, rotate the array by  N elements where N is an integer.
+>
+> For positive N, perform right rotate
+>
+> For negative N, perform left rotate
+
+Example:
+
+![image4](./img/image4.png)
+
+思路:
+
+> If ```N``` is larger than the size of the array, it equals to ```N``` mod ```size of the array```
+>
+> For negative N which should perform left rotation, the action can be replace by performing right rotation by ```N``` mod ```size of the array``` element;
+>
+> However, the ```%``` function of Java doesn't perform in common sense for negative number. For example ```-2``` % ```10``` would result in ```-2``` and ```-14``` % ```10``` would result in ```-4```. So to make it perform correctly for negative number. We can add the ```size of the array``` to the result for negative ```N```.
+>
+> Once we get the simplified ```N```, we rotate the entire array. Then rotate the array from index ```0``` to index ```n-```. Lastly, rotate the array from index ```n``` to the end of the array. 
+
+Java Code:
+
+```java
+static void rotateArray(List<Integer> arr, int n) {
+		int rotate = n % arr.size();
+  	if (rotate < 0) rotate += arr.size();
+  	reverseArray(arr,0,arr.size()-1);
+    reverseArray(arr, 0, rotate-1);
+    reverseArray(arr,rotate, arr.size()-1);
+  }
+static void reverseArray(List <Integer> arr, int left, int right){
+	while (left < right){
+		int temp = arr.get(left);
+    arr.set(left,arr.get(right));
+    arr.set(right,temp);
+    left ++;
+    right --;
+	}
+}
+```
+
