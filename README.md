@@ -5,7 +5,7 @@
 ### Two Sum
 
 Problem:
->Given an array of integers, return indices of the two numbers such that they add up to a specific target.   
+>Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 >Each input have exactly one solution, and you may not use the same element twice
 
 
@@ -33,6 +33,7 @@ public int[] twoSum(int[] nums, int target) {
  			int[] result = {theMap.get(target-nums[i], i};
  			return result;
  		}
+    theMap.put(nums[i],i);
  	}
  	return null;
 }
@@ -486,4 +487,91 @@ static void reverseArray(List <Integer> arr, int left, int right){
 	}
 }
 ```
+
+	### Find low / high Index of  a Key in a Sorted Array
+
+Problem:
+
+> Given a sorted array, find the lowest and the highest index of the given key. Return -1 if the key is not found in the array.
+
+思路：
+
+> Use binary search to approach the problem. For lowest index, modifiy the binary search so :
+>
+> While ```left index``` <= ```right index```:
+>
+> > > if the middle item < ```key```,
+> >
+> > > > ```left index``` = ```middle index``` + 1
+> >
+> > > else (which is middle item >= ```key``` ),
+> >
+> > > > ``` right index``` = ```middle index``` -1;
+>
+> > if it smaller than ```size of the array``` and ```arr[left]``` equals to ```key```
+>
+> > > return ```left index```
+>
+> > Else,
+>
+> > > return -1
+>
+> Notice than unlike the original binary search, this modified binary search always runs to the end (```left index``` > ```right index```). 
+>
+> And it always run through a state that ```left index``` equals to```right index```.
+>
+> In this specific state,  if the current item is equal to or larger than the ```key```,  ```right index``` will be moved which doesn't effect the result since ```left index`` is the one to be returned. 
+>
+> And if the current item is smaller than ```key```, which means the possible solution is next to the current item at the right side, ```left index``` will increase by one so it point to the possible answer. 
+>
+> In both case, ```left index``` will end at the possible solution and ```right index``` will end at the left side next to the possible answer.
+>
+> It is only a possble answer since
+>
+> 1. Maybe the key isn't in the array at all, then ```left index``` will end up at the smallest number that is larger than ```key```.
+> 2. In a specific case of the previous situation, all numbers in the array is smaller than ```key```, ```left index``` will end up at right side next to the end of the array, which result in ```indexOutOfBound Error```, so we should also check for this special case.
+
+Java Code:
+
+```java
+static int findLowIndex(List<Integer> arr, int key) {
+    if (arr.size() == 0){
+      return -1;
+    }
+    int left =0, right = arr.size()-1;
+    int mid;
+    
+    while (left <= right) {
+      mid = (left + right) /2;
+      if (arr.get(mid) < key) left = mid +1;
+      else right = mid -1;
+    }
+    if (left < arr.size() && arr.get(left) == key) return left;
+    else return -1;
+  }
+  
+  static int findHighIndex(List<Integer> arr, int key) {
+    if (arr.size() == 0){
+      return -1;
+    }
+    int left =0, right = arr.size()-1;
+    int mid;
+    
+    while (left < right) {
+      mid = (left + right) /2;
+      if (arr.get(mid) > key) right = mid -1;
+      else left = mid +1;
+    }
+    if (right >= 0 && arr.get(right) == key) return right;
+    else return -1;
+  }
+```
+
+Complexity Analysis:
+
+> The time complexity is O(logn) and the space Complexity is O(1)
+
+
+
+
 
