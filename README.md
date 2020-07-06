@@ -571,7 +571,124 @@ Complexity Analysis:
 
 > The time complexity is O(logn) and the space Complexity is O(1)
 
+### Move All Zeros to the Beginning of the Array
 
+Problem:
+
+> Given an array, move all zero in it to the beginning of the array while maintaining the order of other numbers.
+
+思路:
+
+> Itertate through the array from the end to the beginning. Use a counter to store the number of zeros encounters. For each number that is ```0```, increase ```zeros counter``` by 1. Otherwise, copy the number to the slot that is ```zeros conter``` steps away from it on the right side. Then set the first ````zeros conter``` postions as ```0```
+
+Java Code:
+
+```java
+static void moveZerosToLeft(int[] A) {
+  int zeros = 0;
+  for(int i = A.length-1; i >= 0; i--){
+    if (A[i] == 0 ) zeros ++;
+    else A[i+zeros] = A[i];
+  } 
+  for(int i = 0; i < zeros; i++){
+    A[i] = 0;
+  }
+}
+```
+
+Complexity Analysis:
+
+> The time complexity is O(n) 
+>
+> The space complexity is O(1)
+
+
+
+###  Use Rand2() to implement Rand10() 
+
+Problem:
+
+>  Given a function Rand2() that will generate random number between 1 and 2 (inclusive), construct a function Rand10() that generate random number bewtween 1 and 10.
+
+思路：
+
+> Let ```a``` = (```rand2()``` - ```1```) * ```2``` = ```{0,2}```. 
+>
+> Add ```rand2()``` to ```a``` so we get a random number in ```[1,4]```, which is ```rand4()```
+>
+> Let ```b``` = (```rand4()``` -```1```) * ```2``` = ```{0,2,4,6}```
+>
+> Add ```rand2()``` to ```b``` so we get a random number in ```[1,8]```, which is ```rand8()```
+>
+> Repeat the process again to get a random number in ```[1,16]```, which is ```rand16()```. Minus ```1``` to the result to get random number in ```[0,15]```
+>
+> If the number generated is larger than ```9```, start again from the begining.
+>
+> Else, we get a random number in [0,9]. Then add ```1``` to the result to get a random number in [1,10]
+
+Java Code:
+
+```java
+public int rand10() {
+  while (true){
+    int rand4 = (rand2() -1) * 2 + rand2();
+    int rand8 = (rand4 -1) * 2 + rand2();
+    int rand16 = (rand8 -1) * 2 + rand2();
+    int a = rand16 -1;
+    if (a <= 9){
+      return a + 1;
+    }
+  }
+}
+```
+
+Complexity Analysis:
+
+> Time complexity is O(1)
+>
+> Space complexity is O(1)
+
+
+
+### Use Rand7() to implement Rand10()
+
+Problem:
+
+>  Given a function Rand7() that will generate random number between 1 and 7 (inclusive), construct a function Rand10() that generate random number bewtween 1 and 10.
+
+思路：
+
+> Let ```a``` =  (```Rand7()``` - ```1```) * ```7``` to get random number in {0,7,14,21,28,35,42}
+>
+> Let ```b``` = ```Rand7()``` to get random number in [1,7]
+>
+> Let ```c``` == ```a``` +  ```b``` - 1 to get random number in [0,48]
+>
+> if  ```c```  > 39, start from the begining again. Else, continue. We get random number between[0,39]
+>
+> Let ```d``` = ```c``` / 4 to get random number in [0,9]
+>
+> Let ```e``` = ```d``` +1 to get random number in [1,10]
+
+Java Code:
+
+```java
+public int rand10() {
+  while(true){
+    int rand49 = (rand7() - 1) * 7 + rand7();
+    int c = rand49 -1;
+    if (c <= 39){
+      return (c / 4) + 1;
+			}
+	}
+}
+```
+
+
+
+
+
+### 
 
 
 
