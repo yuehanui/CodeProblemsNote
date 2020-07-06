@@ -688,7 +688,67 @@ public int rand10() {
 
 
 
-### 
+### Stock Buy Sell to Maximize Profit
+
+Problem:
+
+> Given a list of daily stock price, return the buy and sell price to maximize profit. The stock must be bought before sold and it cannot be bought and sold in the same day.
+
+Example:
+
+> Yellow marks buying and green marks selling
+
+![iamge5](./img/iamge5.png)
+
+思路:
+
+> Use Kadane's algorithm, which is a dynamic programming mindset.
+>
+> General idea: the``` miaximum profit of selling at day n``` is either
+>
+> 1. (```the maximum profit of selling at day n-1``` -  ```price of day n-1``` + ```price of day n```) 
+>
+>    or
+>
+> 2. (```the profit of buying at day n-1 and selling at day n```)
+>
+> So we can start by initialize the buying at ```day 0``` and selling at ```day ```, which are the first possible day to buy and sell. then we iterate through the array, for each day, calculate the ```maximum profit of selling at that day``` using the mindset described above. Then if the profit is greater than the ```global maximum profit```, update the ```global maximum profit```.
+>
+> One thing to notice is that this specific problem requires us to return the buying price and selling price instead of the maximum profit. So we will use two variable to store thoes values.
+
+Java Code:
+
+```java
+public static Tuple findBuySellStockPrices(int[] array) {
+    if (array.length == 0){
+      return null;
+    }
+    int globalMaxProfit = Integer.MIN_VALUE;
+    int localMaxProfit = array[1] - array[0];
+    int buy = array[0], sell = array[1];
+    for(int i=2; i < array.length; i++){
+      int a = localMaxProfit + array[i] - array[i-1] ;
+      int b = array[i] - array[i-1];
+      localMaxProfit = Math.max(a,b);
+
+      if (localMaxProfit > globalMaxProfit){
+        globalMaxProfit = localMaxProfit;
+        sell = array[i];
+        if (b > a) {
+          buy = array[i-1];
+        }
+      }
+    }
+    Tuple<Integer, Integer> result = new Tuple<Integer, 			
+  																				Integer>(buy,sell);
+    return result;
+  }
+```
 
 
 
+Complexity Analysis:
+
+> The time complexity is O(n) since we use a single for loop to iterate throuth the array.
+>
+> The spcae complexity is O(1) since the outter space used is fixed.
