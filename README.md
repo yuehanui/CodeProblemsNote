@@ -2,6 +2,8 @@
 
 [TOC]
 
+## Array
+
 ### Two Sum
 
 Problem:
@@ -48,44 +50,6 @@ The key of this algorithm is:
 >If we store the data in the other way. The first step could be replaced using HashMap.containsValue(), which is fine. However, the second part would be a problem since there is no HashMap.getValue(), or at least there is no efficient way to implement HashMap.containsValue(). The efficiency of hashMap comes from the hush function which works on the key instead of the value.
 
 
-
-
-### Add Two Numbers
-Problem:
-> You are Given two non-empty linked lists representing two non-negative integer. The digits are stored in revere order and each node contains a single digit. Add the two numbers and return it as a linked list.
-
-Example:
->Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
- Output: 7 -> 0 -> 8
- Explanation: 342 + 465 = 807.
-
-思路:
-> Simply sum two numbers digit by digit starting from the least-significant digit, which is the heads of the linked lists. For each addition on two digits, if the summation exceed 10, for example the summation is 12,1 will be carried to the more significant digit and the current digit will be set to 2. Just as you do the kindergarten math.
-
-Java Code:
-```java
-public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-	ListNode head = new ListNode(0);
-	ListNode list1 = l1, list2 = l2, currNode = head;
-	int carry = 0;
-
-	while (list1 != null || list2 != null) {
-		int x = (list1 != null) ? list1.val : 0;
-		int y = (list2 != null) ? list2.val : 0;
-		int sum = x + y + carry;
-		carry = sum / 10;
-		int digit = sum % 10;
-		currNode.next = new ListNode(digit);
-		currNode = currNode.next;
-		if (list1 != null) list1 = list1.next;
-		if (list2 != null) list2 = list2.next;
-	}
-	if (carry > 0) {
-		currNode.next = new ListNode(carry);
-	}
-	return head.next;
-}
-```
 
 
 
@@ -650,40 +614,6 @@ Complexity Analysis:
 
 
 
-### Use Rand7() to implement Rand10()
-
-Problem:
-
->  Given a function Rand7() that will generate random number between 1 and 7 (inclusive), construct a function Rand10() that generate random number bewtween 1 and 10.
-
-思路：
-
-> Let ```a``` =  (```Rand7()``` - ```1```) * ```7``` to get random number in {0,7,14,21,28,35,42}
->
-> Let ```b``` = ```Rand7()``` to get random number in [1,7]
->
-> Let ```c``` == ```a``` +  ```b``` - 1 to get random number in [0,48]
->
-> if  ```c```  > 39, start from the begining again. Else, continue. We get random number between[0,39]
->
-> Let ```d``` = ```c``` / 4 to get random number in [0,9]
->
-> Let ```e``` = ```d``` +1 to get random number in [1,10]
-
-Java Code:
-
-```java
-public int rand10() {
-  while(true){
-    int rand49 = (rand7() - 1) * 7 + rand7();
-    int c = rand49 -1;
-    if (c <= 39){
-      return (c / 4) + 1;
-			}
-	}
-}
-```
-
 
 
 
@@ -752,3 +682,277 @@ Complexity Analysis:
 > The time complexity is O(n) since we use a single for loop to iterate throuth the array.
 >
 > The spcae complexity is O(1) since the outter space used is fixed.
+
+
+
+### Merge an Array with Overlapping Intervals
+
+Problem:
+
+> Given a list of iterval pairs which each interval has a start timestamp and a end timestamp. The input list is sorted by starting timestamp. Return a new list with overlapping ivervals merged.
+
+Example:
+
+![image6](./img/image6.png)
+
+思路:
+
+> Keep two variable ```start ``` and ```end``` to indicate the start timestamp and end stimestamp of a interval. Start by initalize ```start``` to the start timestamp of the first interval and ```end``` to the end timestamp of the first interval. 
+>
+> Iterate through the array, for each item, 
+>
+> > if it is overlapping with the interval that ```start``` and ```end```  indicates currently, update ```end``` to merge it in.
+> >
+> > Else, add the interval (```start```, ```end```) to the ouput list then update ```start``` and ```end``` to the start timestamp and end timestamp of the current interval.
+>
+> After the iteration is done, add the interval (```start```, ```end```) to the output list again.
+
+Java Code
+
+```java
+static ArrayList<Pair> mergeIntervals(ArrayList<Pair> v) {
+	if(v == null || v.size() == 0) {
+      return null;
+    }
+  ArrayList<Pair> result = new ArrayList<Pair>();
+  int start = v.get(0).first, end = v.get(0).second;
+
+  for (int i = 1; i < v.size();i++){
+    if (v.get(i).first <= end){
+      end = Math.max(end,v.get(i).second);
+    } else {
+      result.add(new Pair(start,end));
+      start = v.get(i).first;
+      end = v.get(i).second;
+    }
+  }  
+  result.add(new Pair(start,end));
+  return result;
+  }
+```
+
+Complexity Analysis:
+
+> The time complexity is O(n) since we use a single for loop to iterate through the list.
+>
+> The space complexity is O(n) since in worst case, every item in the input list will be add into the output list.
+
+
+
+### Sort an Array using QuickSort Algorithm
+
+Problem:
+
+> Given an array, sort it using QuickSort Algorhtim
+
+思路：
+
+> Review of two partition schemes of Quicksort
+>
+> 1. Lomuto's partition
+>
+> > ```pseudocode
+> > Partition(A, lo, hi)
+> > 	pivot = A[hi]
+> > 	i = lo
+> > 	for (j = 0; j< hi-1; j++)
+> > 		if (A[j] < pivot)
+> > 			swap A[i] and A[j]
+> > 			i++
+> > 	swap A[hi] and A[i]
+> > 	return i
+> > 		
+> > ```
+>
+> 2. Hoare's partition
+>
+> > ```pseudocode
+> > Partition(A, lo, hi)
+> > 	pivot = A[lo]
+> > 	i = lo, j = hi
+> > 	while (true)
+> > 		while A[i] < pivot
+> > 			i ++
+> > 		while A[j] > pivot
+> > 			j --
+> > 		if i >= j 
+> > 			return j
+> > 		else
+> > 			swap A[i] and A[j]
+> > ```
+>
+> Hoare's partition is generally more efficient since it does less comparisons.
+>
+> Both partitions is get O(n^2) time complexity in worst case (already sorted array). This can be avoided by using random pivot or by randomly permute the array before sorting.
+>
+> The general idea of quicksort is to divide & conquer. 
+
+Java Code:
+
+```java
+static void quickSort(int[] arr) {
+  if (arr.length != 0) quickSortHelper(arr,0,arr.length-1);
+  return;
+}
+static void quickSortHelper(int[] arr, int lo, int hi){
+  if (lo < hi){
+    int split = partition(arr,lo,hi);
+    quickSortHelper(arr,lo,split);
+    quickSortHelper(arr, split+1, hi);
+  }
+  return;
+}
+
+static int partition(int[] arr, int lo, int hi){
+  
+  int pivot = arr[lo];   //this line will be different if use randomize pivot to avoit O(n^2) worst case time complexity  
+  int i = lo, j = hi;
+  while (true){
+    while (arr[i] < pivot){
+      i ++;
+    }
+    while (arr[j] > pivot){
+      j --;
+    }
+    if (i >= j) return j;
+
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+```
+
+
+
+Complexity Analysis:
+
+> The average time complexity is O(n logn), the worst case time complexity is O(n^2), which is rare and can be avoid by using the methods mentioned above.
+>
+> The space complexity is O(logn) since it recursively called function and the complexity decrease in logarithmic order
+
+## Linked List
+
+### Add Two Numbers
+
+Problem:
+
+> You are Given two non-empty linked lists representing two non-negative integer. The digits are stored in revere order and each node contains a single digit. Add the two numbers and return it as a linked list.
+
+Example:
+
+>Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+> Output: 7 -> 0 -> 8
+> Explanation: 342 + 465 = 807.
+
+思路:
+
+> Simply sum two numbers digit by digit starting from the least-significant digit, which is the heads of the linked lists. For each addition on two digits, if the summation exceed 10, for example the summation is 12,1 will be carried to the more significant digit and the current digit will be set to 2. Just as you do the kindergarten math.
+
+Java Code:
+
+```java
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+	ListNode head = new ListNode(0);
+	ListNode list1 = l1, list2 = l2, currNode = head;
+	int carry = 0;
+
+	while (list1 != null || list2 != null) {
+		int x = (list1 != null) ? list1.val : 0;
+		int y = (list2 != null) ? list2.val : 0;
+		int sum = x + y + carry;
+		carry = sum / 10;
+		int digit = sum % 10;
+		currNode.next = new ListNode(digit);
+		currNode = currNode.next;
+		if (list1 != null) list1 = list1.next;
+		if (list2 != null) list2 = list2.next;
+	}
+	if (carry > 0) {
+		currNode.next = new ListNode(carry);
+	}
+	return head.next;
+}
+```
+
+Complexity Analysis:
+
+> The time complexity is O(n) sice we use a single while loop to approach the problem.
+>
+> The space complexity is is O(n).
+
+### Reverse a Singly Linked List
+
+Problem:
+
+> Given a singly linked list, return the pointer to the head of the reversed linked list.
+
+思路: 
+
+> Iterate through the linked list. For each node, change the its ```next``` arribute to point to the node that originally before it.
+>
+> One thing to notice is that for a node in singly liked list, the ```next``` arribute is the only reference to its next node. If the ```next``` arribute is modified without storing it somewhere else, the reference to the next node will be perminently lost. So we need to store the reference to the next node in a variable before modify the ```next``` attribute.
+
+Java Code:
+
+```java
+public static Node reverseLinkedList(Node head){
+  if (head == null || head.next == null) return head;
+  
+  Node ListToDo = head.next;
+  Node ReversedList = head;
+  ReversedList.next = null;
+  
+  while (ListToDo != null){
+    Node temp = ListToDo;
+    ListToDo = ListToDo.next;
+    temp.next = ReversedList;
+    ReversedList = temp;
+  }
+  return ReversedList;
+}
+```
+
+Complexity Analysis:
+
+> The time complexity is O(n) since we use a single whle loop to iterate through the linked list.
+>
+> The space complexity is O(1) since fixed number of variables are used to solve the problem.
+
+
+
+
+
+### Use Rand7() to implement Rand10()
+
+Problem:
+
+>  Given a function Rand7() that will generate random number between 1 and 7 (inclusive), construct a function Rand10() that generate random number bewtween 1 and 10.
+
+思路：
+
+> Let ```a``` =  (```Rand7()``` - ```1```) * ```7``` to get random number in {0,7,14,21,28,35,42}
+>
+> Let ```b``` = ```Rand7()``` to get random number in [1,7]
+>
+> Let ```c``` == ```a``` +  ```b``` - 1 to get random number in [0,48]
+>
+> if  ```c```  > 39, start from the begining again. Else, continue. We get random number between[0,39]
+>
+> Let ```d``` = ```c``` / 4 to get random number in [0,9]
+>
+> Let ```e``` = ```d``` +1 to get random number in [1,10]
+
+Java Code:
+
+```java
+public int rand10() {
+  while(true){
+    int rand49 = (rand7() - 1) * 7 + rand7();
+    int c = rand49 -1;
+    if (c <= 39){
+      return (c / 4) + 1;
+			}
+	}
+}
+```
+
