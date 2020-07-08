@@ -675,8 +675,6 @@ public static Tuple findBuySellStockPrices(int[] array) {
   }
 ```
 
-
-
 Complexity Analysis:
 
 > The time complexity is O(n) since we use a single for loop to iterate throuth the array.
@@ -918,9 +916,47 @@ Complexity Analysis:
 >
 > The space complexity is O(1) since fixed number of variables are used to solve the problem.
 
+### Delete All Occurrences of a Given Key in a Linked List
 
+Problem: 
 
+>  Given a linked list and a key, delete all the nodes with the given key in the linked list.
 
+Example:
+
+![image7](./img/image7.png)
+
+思路：
+
+> The general idea is if a node is the key, connect its previous node to its next node, which will remove this node from the linked list.
+>
+> One thing to notice is that the head node doesn't has a 'previous node'. So if the head node is the key, we will set its next node as head instead.
+
+Java Code:
+
+```java
+public static LinkedListNode deleteNode(LinkedListNode head, int key) 
+{
+  while (head.data == key){
+    head = head.next;
+  }
+  LinkedListNode pointer = head;
+  while(pointer.next != null){
+    if (pointer.next.data == key){
+      pointer.next = pointer.next.next;
+    } else {
+      pointer = pointer.next;
+    }
+  }
+  return head;
+}
+```
+
+Complexify Analysis:
+
+> The time complexity is O(n)
+>
+> The space complexity is O(1)
 
 ### Use Rand7() to implement Rand10()
 
