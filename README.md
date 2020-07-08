@@ -958,6 +958,45 @@ Complexify Analysis:
 >
 > The space complexity is O(1)
 
+
+
+### Sort Linked List Using Insertion Sort
+
+Problem:
+
+> Given a linked list, return a sorted linked list using insertion sort
+
+思路:
+
+> Maintain two linked list. One is the original list and the other one is a output list, an initially empty list.. Iterate through the originally list, for each node, compare it with the nodes of the output list and insert it at the position that  its previous node is smaller than it and the next node is larger than it. 
+
+Java Code:
+
+```java
+public static LinkedListNode insertionSort(LinkedListNode head) {
+ 	LinkedListNode newHead = new LinkedListNode(Integer.MIN_VALUE);
+  LinkedListNode pointer = head; 
+  while (pointer != null){
+    LinkedListNode newPointer = newHead;
+    while (newPointer.next != null && newPointer.next.data < pointer.data){
+    newPointer = newPointer.next;
+	}
+    LinkedListNode temp= newPointer.next;
+    newPointer.next = new LinkedListNode(pointer.data);
+    newPointer.next.next = temp;
+    
+    pointer = pointer.next;
+  }
+  return newHead.next;
+}
+```
+
+Complexity Analysis:
+
+> The time complexity is O(n^2), tipical time complexity of insertion sort algorithm. 
+>
+> The space complexity is O(1).
+
 ### Use Rand7() to implement Rand10()
 
 Problem:
