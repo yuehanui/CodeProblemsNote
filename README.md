@@ -993,9 +993,71 @@ public static LinkedListNode insertionSort(LinkedListNode head) {
 
 Complexity Analysis:
 
-> The time complexity is O(n^2), tipical time complexity of insertion sort algorithm. 
+> The time complexity is O(n^2), which is the typical time complexity of insertion sort algorithm. 
 >
 > The space complexity is O(1).
+
+
+
+### Intersection point of Two Lists
+
+Problem:
+
+> Given two linked list that may or may not intersect, return the point of intersection if they intersect. Or return null if they don't.
+
+Example:
+
+![image8](./img/image8.png)
+
+思路:
+
+> If two linked list intersect at some point, they have the same remaining length at that point. The essential reason is that they in fact point to the same memory address when they intersect. 
+>
+> So for two linked lists with length ```m``` and `n`, respectively, the maximum possible length of  the intersection part is MAX(`m`, `n`). Assume `m` > `n`, then the first possbile intersection point for n is its first node. And the first possbile intersection point for m is its (`m`-`n`+1)th node. 
+>
+> So we can use two pinter. One points to the (`m`-`n`+1)th node of the longer list. The other one points to the first node of the shorter list. Then we start to move two pointers simultaneously while comparing them. Once two pointer are equal, we can be sure that the node they point to and its following nodes  are identical.
+
+Java Code:
+
+```java
+public static LinkedListNode intersect(LinkedListNode head1, LinkedListNode head2) {
+  int length1 = getLLLength(head1);
+  int length2 = getLLLength(head2);
+  LinkedListNode pointerLong, pointerShort;
+  
+  if (length1 > length2){
+    pointerLong = head1;
+    pointerShort = head2;
+  } else {
+    pointerLong = head2;
+    pointerShort = head1;
+  }
+  for (int i = 0; i < Math.abs(length1-length2); i++){
+    pointerLong = pointerLong.next;
+  }
+  while ( pointerLong != null && pointerLong != pointerShort) {
+    pointerLong = pointerLong.next;
+    pointerShort = pointerShort.next;
+  }
+  return pointerLong;
+} 
+public static int getLLLength(LinkedListNode head){
+  int length = 0;
+  while (head != null){
+    length += 1;
+    head = head.next;
+  }
+  return length;
+}
+```
+
+Complexity Analysis:
+
+> The time complexity is O(m+n), linear time complexity
+>
+> The space complexity is O(1)
+
+
 
 ### Use Rand7() to implement Rand10()
 
