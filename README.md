@@ -1057,7 +1057,129 @@ Complexity Analysis:
 >
 > The space complexity is O(1)
 
+### Find n'th Node from the End of a Linked List
 
+Problem:
+
+> Given a linked list, return the n'th node from the end. Return null if  n is out of bound
+
+思路:
+
+> Use to pointers that are n nodes away. Move two pointers simultaneously. When one pointer reach the end, the other pointer will be at the n'th node from the end.
+
+Java Code:
+
+```java
+public static LinkedListNode findNthFromLast(LinkedListNode head, int n) {
+  if (head == null || n < 1) return null;
+  LinkedListNode tail = head;
+  while(n>0){
+    tail = tail.next;
+    if (tail == null) return null; //n is out-of bound
+    n--;
+  }
+  while(tail != null){
+    tail = tail.next;
+    head = head.next;
+  }
+  return head;
+  }
+```
+
+Complexity Analysis:
+
+> The time complexity is O(n)
+>
+> The space complexity is O(1)
+
+### Swap N'th Node with Head
+
+Problem:
+
+> Given a head of a singly linked list and an integer N. Swap the N'th node of the linked list with the Head;
+
+ 思路：
+
+> First thing to notice is that simply swap the value in the node isn't necessary since the data type sotred in the linked list isn't always interger. Simply swaping the value will involve different implementation according to its data type. So what we should do is swaping the nodes.
+>
+> The basic idea is to change the N'th node's next field so it points to the 2nd node. Then change the N-1'th node's next field so it points to the original head. And also change the original head's next field so it points to the N'th node's original next node. 
+
+Java Code:
+
+```java
+static LinkedListNode swapNthNode(LinkedListNode head, int n) {
+  if (head == null || n < 2) return head;
+
+  LinkedListNode pointer = head;
+  LinkedListNode temp = head.next;
+  for (int i = 0; i < n-2; i++){
+    pointer = pointer.next;
+    if (pointer== null) return null;
+  }
+  LinkedListNode newHead = pointer.next;
+  pointer.next = head;
+  head.next = newHead.next;
+  newHead.next = temp;
+  return newHead;
+}
+```
+
+Complexity Analysis:
+
+> The time complexity is O(n).
+>
+> The space complexity is O(1).
+
+### Merge Two Sorted Linked List
+
+Problem:
+
+> Given two sorted linked list, merge them so that the resulting linked list is also sorted.
+
+思路:
+
+> Use to pointer, one for each linked list. The pointers initially point to the first nodes of the lists. Compare two number and add the node with smaller number to the return list, then move the pointer of it to its next node. When one of  the pointer is null (which indicate one of the list is all in the return list now), linked the node of another pointer to the return list.
+
+Java Code:
+
+```java
+public static LinkedListNode mergeSorted(LinkedListNode head1, LinkedListNode head2) {    
+  if (head1 == null) return head2;
+  if (head2 == null) return head1;
+
+  LinkedListNode newHead;
+  if (head1.data > head2.data){
+    newHead = head2;
+    head2 = head2.next;
+  }
+  else {
+    newHead = head1;
+    head1 = head1.next;
+  }
+
+  LinkedListNode pointer = newHead;
+  while(head1 != null && head2 != null){
+    if (head2.data > head1.data){
+      pointer.next = head1;
+      head1 = head1.next;
+    } else {
+      pointer.next = head2;
+      head2 = head2.next;
+    }
+    pointer = pointer.next;
+  }
+  if (head1 != null) pointer.next = head1;
+  if (head2 != null) pointer.next = head2;
+
+  return newHead;
+}
+```
+
+Complexity Analysis:
+
+> The time complexity is O(m+n)
+>
+> The space complexity is O(m+n)
 
 ### Use Rand7() to implement Rand10()
 
