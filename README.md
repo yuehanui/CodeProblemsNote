@@ -1181,7 +1181,93 @@ Complexity Analysis:
 >
 > The space complexity is O(m+n)
 
-### Use Rand7() to implement Rand10()
+### Sort a Linked List Using Merge Sort
+
+Problem:
+
+> Given a Linked List of integer, sort it in ascending order using merge sort, and return the new head of the linked list.
+
+思路:
+
+> The tricky part is spliting the linked list into two halves. For an array, we can simply use index to split it. But for a linked list, we need to find another way to split it. 
+>
+> Use the fast / slow pointers approach. Let the fast pointer moves two step in each iteration and the slow pointer moves one step. So when the fast pointer reach the end of the linked list, the slow pointer will be at the middle of the linked list.
+>
+> After spliting the list into two part, we recursively called the mergsort function so the problem is trasformed into small subproblem. The smallest subproblem will be a list with one or no node, which is already sorted. Then it work from the buttom up, the problem at each level is to merge two sorted linkedlist. We can use two pointer, one for each linked list, and keep adding the smaller node to the new node while moving the pointer.
+
+Java Code:
+
+```java
+
+ public static LinkedListNode mergeSort(LinkedListNode head) {
+  if (head == null || head.next == null) return head;
+  Pair<LinkedListNode,LinkedListNode> firstSecond= new Pair<>(null,null);
+
+  split(head,firstSecond);
+
+  firstSecond.first =mergeSort(firstSecond.first);
+  firstSecond.second =mergeSort(firstSecond.second);
+
+  return mergeSortedLists(firstSecond.first,firstSecond.second);
+}
+public static void split(LinkedListNode head, Pair<LinkedListNode,LinkedListNode> firstSecond){
+  if (head == null) return;
+  if (head.next == null){
+    firstSecond.first = head;
+    firstSecond.second = null;
+    return;
+  }
+  LinkedListNode slow = head, fast = head.next;
+  while (fast != null){
+    fast = fast.next;
+    if (fast!= null){
+      fast = fast.next;
+      slow = slow.next;
+    }
+  }
+  firstSecond.first = head;
+  firstSecond.second = slow.next;
+  slow.next = null;
+}
+
+public static LinkedListNode mergeSortedLists(LinkedListNode first,LinkedListNode second){
+  if (first == null) return second;
+  if (second == null) return first;
+
+  LinkedListNode newHead;
+  if (first.data <= second.data){
+    newHead = first;
+    first = first.next;
+  } else {
+    newHead = second;
+    second = second.next;
+  }
+  LinkedListNode pointer = newHead;
+  while (first != null && second != null){
+    if (first.data <= second.data){
+      pointer.next = first;
+      first = first.next;
+    } else {
+      pointer.next = second;
+      second = second.next;
+    }
+    pointer = pointer.next;
+  }
+
+  if (first == null) {
+    pointer.next = second;
+  } else if (second == null){
+    pointer.next = first;
+  }
+  return newHead;
+}
+```
+
+Complexity Analysis:
+
+> The time complexity is O(logN)
+>
+> The space complexity is O(logN)
 
 Problem:
 
