@@ -2,6 +2,8 @@
 
 [TOC]
 
+## Count: 22
+
 ## Array
 
 ### Two Sum
@@ -567,50 +569,6 @@ Complexity Analysis:
 > The space complexity is O(1)
 
 
-
-###  Use Rand2() to implement Rand10() 
-
-Problem:
-
->  Given a function Rand2() that will generate random number between 1 and 2 (inclusive), construct a function Rand10() that generate random number bewtween 1 and 10.
-
-思路：
-
-> Let ```a``` = (```rand2()``` - ```1```) * ```2``` = ```{0,2}```. 
->
-> Add ```rand2()``` to ```a``` so we get a random number in ```[1,4]```, which is ```rand4()```
->
-> Let ```b``` = (```rand4()``` -```1```) * ```2``` = ```{0,2,4,6}```
->
-> Add ```rand2()``` to ```b``` so we get a random number in ```[1,8]```, which is ```rand8()```
->
-> Repeat the process again to get a random number in ```[1,16]```, which is ```rand16()```. Minus ```1``` to the result to get random number in ```[0,15]```
->
-> If the number generated is larger than ```9```, start again from the begining.
->
-> Else, we get a random number in [0,9]. Then add ```1``` to the result to get a random number in [1,10]
-
-Java Code:
-
-```java
-public int rand10() {
-  while (true){
-    int rand4 = (rand2() -1) * 2 + rand2();
-    int rand8 = (rand4 -1) * 2 + rand2();
-    int rand16 = (rand8 -1) * 2 + rand2();
-    int a = rand16 -1;
-    if (a <= 9){
-      return a + 1;
-    }
-  }
-}
-```
-
-Complexity Analysis:
-
-> Time complexity is O(1)
->
-> Space complexity is O(1)
 
 
 
@@ -1269,7 +1227,104 @@ Complexity Analysis:
 >
 > The space complexity is O(logN)
 
+## Reverse Even Nodes in a Linked List
+
 Problem:
+
+> Given a linked list, reverese the nodes at even indeces.
+
+![image9](./img/image9.png)
+
+Thought:
+
+> Extract the nodes with even indices into a new list. While extracting  even nodes, push from the head of the new list. Then merge two lists alternatively.
+
+Java Code:
+
+```java
+public static LinkedListNode reverseEvenNodes(LinkedListNode head) {
+    if (head == null || head.next == null) return head;
+    
+    // extract the nodes at even indices into a new list.
+    LinkedListNode even = null, pointer = head;
+    while (pointer != null && pointer.next != null){
+      LinkedListNode temp = even;
+      even = pointer.next;
+
+      if(pointer.next.next != null){
+        pointer.next = pointer.next.next;
+      } else{ // reach end of list
+        pointer.next = null;  
+      }
+      pointer = pointer.next;
+      even.next = temp;
+    }
+      // merge two lists
+      pointer = head;
+      while(pointer != null && even != null){
+        LinkedListNode temp = pointer.next;
+        pointer.next = even;
+        even = even.next;
+        pointer.next.next = temp;
+        pointer = pointer.next.next;
+      }
+      return head;
+    }
+```
+
+Complexity:
+
+> Time complexity: O(n)
+>
+> Space complexity O(1)
+
+
+
+###  Use Rand2() to implement Rand10() 
+
+Problem:
+
+>  Given a function Rand2() that will generate random number between 1 and 2 (inclusive), construct a function Rand10() that generate random number bewtween 1 and 10.
+
+思路：
+
+> Let ```a``` = (```rand2()``` - ```1```) * ```2``` = ```{0,2}```. 
+>
+> Add ```rand2()``` to ```a``` so we get a random number in ```[1,4]```, which is ```rand4()```
+>
+> Let ```b``` = (```rand4()``` -```1```) * ```2``` = ```{0,2,4,6}```
+>
+> Add ```rand2()``` to ```b``` so we get a random number in ```[1,8]```, which is ```rand8()```
+>
+> Repeat the process again to get a random number in ```[1,16]```, which is ```rand16()```. Minus ```1``` to the result to get random number in ```[0,15]```
+>
+> If the number generated is larger than ```9```, start again from the begining.
+>
+> Else, we get a random number in [0,9]. Then add ```1``` to the result to get a random number in [1,10]
+
+Java Code:
+
+```java
+public int rand10() {
+  while (true){
+    int rand4 = (rand2() -1) * 2 + rand2();
+    int rand8 = (rand4 -1) * 2 + rand2();
+    int rand16 = (rand8 -1) * 2 + rand2();
+    int a = rand16 -1;
+    if (a <= 9){
+      return a + 1;
+    }
+  }
+}
+```
+
+Complexity Analysis:
+
+> Time complexity is O(1)
+>
+> Space complexity is O(1)
+
+Similar Problem:
 
 >  Given a function Rand7() that will generate random number between 1 and 7 (inclusive), construct a function Rand10() that generate random number bewtween 1 and 10.
 
