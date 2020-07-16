@@ -1227,7 +1227,7 @@ Complexity Analysis:
 >
 > The space complexity is O(logN)
 
-## Reverse Even Nodes in a Linked List
+### Reverse Even Nodes in a Linked List
 
 Problem:
 
@@ -1278,7 +1278,60 @@ Complexity:
 >
 > Space complexity O(1)
 
+### Rotate a Linked List by N nodes
 
+Problem
+
+> Given the head of a linked list and an integer 'n', rotate the linked list by 'n'.
+
+###  ![image10](./img/image10.png)
+
+Thought:
+
+> If we use the trivial method, rotating the list n times, the time complexity will be O(mn), which m is the length of the list.
+>
+> A more efficient way is to perform a ratiation at the (m-n +1)th node. For example, for n = 2, perform the rotation at the ( 5 - 2 +1 ) = 4th node. For n larger than M or negative n, adjust it value so it lies in the area of (0 <= n < m)
+
+Java Code:
+
+```java
+public static LinkedListNode rotateList(LinkedListNode head, int n) {
+  if (head == null | n == 0) return head;
+  int length = getLength(head);
+  n = n % length;
+  if (n < 0) n += length;
+  int rotate = (length - n - 1);
+
+  LinkedListNode pointer  = head;
+  int count = 0; 
+  while (count < rotate){
+    pointer = pointer.next;
+    count ++;
+  }
+  LinkedListNode newHead = pointer.next;
+  pointer.next = null;
+  LinkedListNode pointer2 = newHead;
+  while(pointer2.next != null){
+    pointer2 = pointer2.next;
+  }
+  pointer2.next = head;
+  return newHead;
+}
+public static int getLength (LinkedListNode head){
+  int count = 0;
+  while (head != null){
+    count ++;
+    head = head.next;
+  }
+  return count;
+}
+```
+
+Complexity Analysis:
+
+> Time complexity: O(m), m is the length of the list
+>
+> Space complexity: O(1)
 
 ###  Use Rand2() to implement Rand10() 
 
