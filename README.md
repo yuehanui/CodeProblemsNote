@@ -1,4 +1,4 @@
-# CodeProblemsNote
+# Code Problems Note
 
 [TOC]
 
@@ -225,7 +225,8 @@ public static ArrayDeque<Integer> findMaxSlidingWindow(int[] arr, int windowSize
   }
 ```
 
-Complexity Analysis
+> Complexity Analysis
+>
 
 > The array is iterated once. Each item in the array entered the deque once. So the time complexity is O(n)
 >
@@ -570,12 +571,6 @@ Complexity Analysis:
 
 
 
-
-
-
-
-
-
 ### Stock Buy Sell to Maximize Profit
 
 Problem:
@@ -600,7 +595,7 @@ Example:
 >
 > 2. (```the profit of buying at day n-1 and selling at day n```)
 >
-> So we can start by initialize the buying at ```day 0``` and selling at ```day ```, which are the first possible day to buy and sell. then we iterate through the array, for each day, calculate the ```maximum profit of selling at that day``` using the mindset described above. Then if the profit is greater than the ```global maximum profit```, update the ```global maximum profit```.
+> So we can start by initialize the buying at ```day 0``` and selling at ```day 1``` , which are the first possible day to buy and sell. then we iterate through the array, for each day, calculate the ```maximum profit of selling at that day``` using the mindset described above. Then if the profit is greater than the ```global maximum profit```, update the ```global maximum profit```.
 >
 > One thing to notice is that this specific problem requires us to return the buying price and selling price instead of the maximum profit. So we will use two variable to store thoes values.
 
@@ -719,8 +714,38 @@ Problem:
 > > 	return i
 > > 		
 > > ```
+> >
+> > **`i`的移动逻辑**
+> >
+> > > `i` 从向右移动，遇到小于`pivot`的数则继续移动，遇到大于`pivot`的数则会保持指向该数，并等待`j`找到比`pivot`小的数来跟他交换，交换后`i`向右移动一格。
+> >
+> > 
+> >
+> > **`j`的移动逻辑**
+> >
+> > > `j`从左向右移动，遇到比`pivot`大的数则跳过，遇到比`pivot`小的数则把该数与`i`指向的数交换。
+> >
+> > 
+> >
+> > **算法中只判断`j`指向的数比`pivot`大，并没有判断`i`指向的数字是否比`pivot`小，什么操作？**
+> >
+> > > 分两个阶段，初始化阶段和正式阶段
+> > >
+> > > 在遇到第一个大于`pivot`的数之前，`i`和`j`会保持指向同一个数并会进行交换（并不会带来实质改变）。遇到第一个大于`pivot`的数后`i`停下，而`j`继续前进，此时他们才分开。
+> > >
+> > > 当`i`找到第一个比`pivot`大的数后，它就不再会指向比`pivot`小的数字。这是因为他在和`j`执行交换后指向的下一个数一定是大于`pivot`的（如果该数比`pivot`小，则`j`会在经过它的时候把它和`i`指向的数进行交换。交换后`i`也会移动，等同于`i`带着它指向的大于`pivot`的数进行移动。所以只有当`i`指向的数后面至少有一个大于`pivot`的数时，`i`才能在移动后指向另一个数。）
+> > >
+> > >  所以可以这么理解，`i`从左到右开始找比`pivot`小的数，找到后就盯着它。`j`则从左到右寻找比`pivot`小的数，找到就把它就与`i`指向的数进行交换。交换发生时，`j`一定是送出去一个比`pivot`小的数，但`i`并不一定指向一个比`pivot`大的数。但当`i`指向的数不比`pivot`大时，`i`和`j`必定是指向同一个数字，所以此时的交换是不会造成结果的。
+> >
+> > 
+> >
+> > **如何知道loop结束时`i`就是停留在数列的大小分界点上？**
+> >
+> > >  在loop完成时，`j`遍历完array，`i`则指向从左到右第一个比`pivot`大的数字。这是因为`i`见到比`pivot`小的数字会直接路过，而见到比`pivot`大的数会盯着等到换到一个比`pivot`小的数后才继续前进，所以`i`在身后留下的永远是比`pivot`小的数。
+> >
+> > 
 >
-> 2. Hoare's partition
+> 1. Hoare's partition
 >
 > > ```pseudocode
 > > Partition(A, lo, hi)
@@ -776,6 +801,7 @@ static int partition(int[] arr, int lo, int hi){
     arr[i] = arr[j];
     arr[j] = temp;
   }
+}
 ```
 
 
@@ -800,7 +826,7 @@ Example:
 > Output: 7 -> 0 -> 8
 > Explanation: 342 + 465 = 807.
 
-思路:
+​	思路:
 
 > Simply sum two numbers digit by digit starting from the least-significant digit, which is the heads of the linked lists. For each addition on two digits, if the summation exceed 10, for example the summation is 12,1 will be carried to the more significant digit and the current digit will be set to 2. Just as you do the kindergarten math.
 
@@ -1015,6 +1041,8 @@ Complexity Analysis:
 >
 > The space complexity is O(1)
 
+
+
 ### Find n'th Node from the End of a Linked List
 
 Problem:
@@ -1049,6 +1077,8 @@ Complexity Analysis:
 > The time complexity is O(n)
 >
 > The space complexity is O(1)
+
+
 
 ### Swap N'th Node with Head
 
@@ -1087,6 +1117,8 @@ Complexity Analysis:
 > The time complexity is O(n).
 >
 > The space complexity is O(1).
+
+
 
 ### Merge Two Sorted Linked List
 
@@ -1138,6 +1170,8 @@ Complexity Analysis:
 > The time complexity is O(m+n)
 >
 > The space complexity is O(m+n)
+
+
 
 ### Sort a Linked List Using Merge Sort
 
@@ -1227,6 +1261,8 @@ Complexity Analysis:
 >
 > The space complexity is O(logN)
 
+
+
 ### Reverse Even Nodes in a Linked List
 
 Problem:
@@ -1277,6 +1313,8 @@ Complexity:
 > Time complexity: O(n)
 >
 > Space complexity O(1)
+
+
 
 ### Rotate a Linked List by N nodes
 
@@ -1332,6 +1370,263 @@ Complexity Analysis:
 > Time complexity: O(m), m is the length of the list
 >
 > Space complexity: O(1)
+
+
+
+### Reverse Alternate K Nodes in a Singly Linked List
+
+Problem:
+
+> Given a linkedlist of interger and an integer ''k', reverse every 'k' element.
+
+
+
+Example:
+
+<img src="/Users/Yuehan/Library/Mobile Documents/com~apple~CloudDocs/CodeProblemsNote/img/img11.png" alt="img11" style="zoom: 25%;" />
+
+
+
+思路: 
+
+> Within each k element, the problem is a simply "reverse a linked list" problem. The primary challenge of the prolem come to linking two reversed part and dealing with the beginning/end of the linkedlist.
+>
+> Iterate through the linkedlist, for every reversed k elements fraction, we store its tail and the original head of the next fraction to come. 
+>
+> The reason we need to keep track with these two node is that:
+>
+> 1. we need to linked the tail to the next head after reversing 
+> 2. The original head of the next fraction is the only thing we get to access that fraction and everyting after it.
+>
+> Dealing with begining of the linkedlist:
+>
+> > for the frist fraction, we don't need to link the tail of the previous fraction to it since there is no 'previous fraction'.
+>
+> Dealing with the end of the linkedlist;
+>
+> > fort he last fraction, the number of node in that fraction may be less than k, so the judgement to end the loop should be either k nodes are visited or reching the end of the linkedList.
+
+
+
+```java
+static LinkedListNode reverseKNodes(LinkedListNode head, int k) {
+  if (k <=1 || head == null || head.next == null) return head;
+  
+  LinkedListNode newHead = null;
+  LinkedListNode preTail = null;
+  
+  while (head != null){
+    LinkedListNode nextTail = head;
+    LinkedListNode pre = preTail;
+    int count = k;
+    while (head != null && count>0){
+      count--;
+      LinkedListNode temp = head.next;
+      head.next = pre;
+      pre = head;
+      head =temp;
+		}
+    if (newHead == null) newHead = pre;
+    if (preTail != null) preTail.next = pre;
+    preTail = nextTail;
+    nextTail.next = head;
+  }
+  return newHead;
+}
+```
+
+
+
+Complexity Analysis:
+
+> Time Compexity: O(n)
+>
+> Space Complexity O(1)
+
+
+
+### Copy Linked List with Arbitrary Pointer
+
+Problem: 
+
+> Given a special linked list which has not only a common `next` attribute, but also a `arbitrary_pointer` arrtibute. the `arbitrary_pinter` points to a random node in the list. Deep copy the linked list and return it.
+
+
+
+Example:
+
+<img src="/Users/Yuehan/Library/Mobile Documents/com~apple~CloudDocs/CodeProblemsNote/img/img12.png" alt="img12" style="zoom: 33%;" />
+
+思路:
+
+> The key mindset to solving this problem is that it is relatively easy to deep copy a common linked list while it is tricky to deep copy the `arbitrary_pointer` field. And the reason behind it is that it is hard to loacte the coressponding node in the new list of a node in the original list. For example, I know that the `arbitrary_pointer` of the node with value 7 points to the node with value 21. But I can't locate the node with value 21 in the new list using that information (If it is a array, we can use index to locate it easily ). Another reason is that the node that one's `arbitrary_pointer` points to may hasn't been created yet.
+>
+> So it is easier if we leave the tricky part, the `arbitrary_pointer` , after we finished coping other part of the list.
+>
+> First deep copy the list while handling the `arbitrary_pointer` in this way: simply point it to the same node as the original list does.. While doing so, use a map structure to map the original node to the copied node.
+>
+> Then iterate through the new list, for each node, get its `arbitrary_pointer` field, locate its corresponding node in the new list using the map. Then update the `arbitrary_pointer` field.
+
+
+
+Java Code:
+
+```java
+public static LinkedListNode deepCopyArbitraryPointer(LinkedListNode head) {
+  	{ if (head == null) {
+      return null;
+    }
+     
+    LinkedListNode newHead = new LinkedListNode(0);
+    LinkedListNode oldPointer = head;
+    LinkedListNode newPointer = newHead;
+    Map<LinkedListNode,LinkedListNode> aMap = new HashMap<>();
+
+    // deep copy the linked list with the arbitrary_pointer point to the nodes in the original list.
+    while (oldPointer != null){
+      newPointer.next = new LinkedListNode(oldPointer.data);
+      newPointer = newPointer.next;
+      newPointer.arbitraryPointer = oldPointer.arbitraryPointer;
+      aMap.put(oldPointer,newPointer);
+      oldPointer = oldPointer.next;
+    }
+		
+    // update the arbitrary_pointer using the HashMap
+    newPointer = newHead.next;
+    while (newPointer != null){
+      if (newPointer.arbitraryPointer != null){
+      	newPointer.arbitraryPointer = aMap.get(newPointer.arbitraryPointer);
+      }
+      newPointer = newPointer.next;
+    }
+
+    return newHead.next;
+  }  
+```
+
+
+
+Complexity Analysis:
+
+> Time complexity: O(n)
+>
+> Space complexity: O(n)
+
+
+
+## Math & Stat
+
+### Find kth Permutation
+
+Problem:
+
+> Given a set of n elements, find the `k`th permutation.
+
+
+
+Example:
+
+<img src="/Users/Yuehan/Library/Mobile Documents/com~apple~CloudDocs/CodeProblemsNote/img/img13.png" alt="img13" style="zoom: 33%;" />
+
+<img src="/Users/Yuehan/Library/Mobile Documents/com~apple~CloudDocs/CodeProblemsNote/img/img14.png" alt="img14" style="zoom:33%;" />
+
+思路：
+
+> If we use the trival approach, which is to genereate all possible permutation and return the `k`th one, the time complexity will be O(n!).
+>
+> A better approch will be like:
+>
+> for a set of n elements. The 1st number of a permutation could be {1,n}. And for each of these 1st number, there are (n-1)! premutations. Think about it in this way: 
+>
+> > Afterthe 1st number is divided, the later part of the permutation is the same as the permution of (n-1) but with (maybe) different number of comsistitution. 
+
+
+
+```java
+static void findKthPermutation(List<Character> v, int k, StringBuilder result) {
+    // base case
+    if (v.isEmpty()) return;
+    // Recursion
+    int count = factorial(v.size()-1);
+    int index = (k-1) / count;
+    result.append(v.remove(index));
+    findKthPermutation(v,k-(index * count), result);
+  } 
+  static int factorial(int n){
+    if (n ==1 || n ==0) return 1;
+    return n * factorial(n-1);
+  }
+```
+
+
+
+Complexity Analysis:
+
+> The time complexity is O(n)
+>
+> The space complexity is O(n)
+
+
+
+
+
+### Integer Division Without Using * or /
+
+Problem:
+
+> Given two integer `x` and `y`. Return `x` ÷ `y` without using the `/` and `*` operators.
+
+
+
+思路：
+
+> The trival approach will be:
+>
+> > Use a counter to count the number of `y` in `x`. For each iteration, counter increases by one and `x` decreases by `y`. And the loop end when `x` is smaller than `y`.
+>
+> This approach is very intuative while inefficient.It will takes O(n) time to get the answer.
+>
+> It is better to approach the problem using the shift operation.
+>
+> > We will still using the loop. But for each iteration, we left shift the counter and `x`. which will make them increase exponentially. Once `x` becomes larger than or equal to `y`, the loop ends and we use some monor techniques to access each cirenstence and got the answer in O(log n) time.
+>
+> We can also right shfit `y` instead of left shieft `x` , but calcualtion the squre root is likely to take more time.
+
+
+
+Java code:
+
+```java
+public static int integerDivide(int x, int y) {
+    // handle special cases
+    if (y == 0) return -1;
+    if (x <= y) return 0;
+    if (y == 1) return x;
+
+    int count = 1;
+    int temp = y;
+    while( x > temp){
+      count <<= 1;
+      temp <<= 1;
+    }
+    if (x == temp) return count;
+
+    // if x > temp
+    count >>= 1;
+    temp >>= 1;
+    return count + integerDivide(x-temp, y);
+}
+```
+
+ 
+
+Complexity Analysis:
+
+> Time complexity is O (log n)
+>
+> Space complexity is O(log n) since the recursive call will comsume memory on stack;
+
+
 
 ###  Use Rand2() to implement Rand10() 
 
@@ -1408,4 +1703,294 @@ public int rand10() {
 	}
 }
 ```
+
+
+
+
+
+### Pythagorean Triplets
+
+Problem:
+
+> Given an array of integers, find all pythagorean triplets (a,b,c are pythagorean triplets if a^2 + b^2 = c^2)
+
+思路：
+
+> The intuative approach will takes O(n^3) time. Here is a better approach.
+>
+> First sort the array ,which will takes at most O(n) time no matter which sorting algorithm you use.
+>
+> Then we loop through the array and for each iteration, we use an pointer `l` and an pointer `r`. The pointer `l` starts at the first item in the array and the pointer `r` started at the last item in the array. Then we check if arr[l]^2 + arr[r]^2 == arr[i]^2; if that so ,we add these three number to the list. if arr[l]^2 + arr[r]^2 > arr[i]^2, then we decrease `r` by one. if arr[l]^2 + arr[r]^2 < arr[i]^2, we increase `l` by one.
+
+
+
+Java Code:
+
+```java
+tatic List<int[]> findPythagoreanTriplets(int[] arr) {
+    List<int[]> triplets = new ArrayList<int[]>();
+    QuickSort(arr,0,arr.length-1);// assume quickSort is already implemented.
+    for (int i =0; i < arr.length; i++){
+      int l = 0, r = arr.length-1;
+      while (l<r){
+        if (i != l && i != r){
+          int result = arr[l] * arr[l] + arr[r]* arr[r] - arr[i] * arr[i];
+          if (result == 0){
+            int [] triplet = {arr[l],arr[r],arr[i]};
+            triplets.add(triplet);
+            r --;
+            l ++;
+          } else if (result > 0){
+            r --;
+          } else {
+            l ++;
+          }
+        } 
+        else if (i == l) l++;
+        else  r --;
+      }
+    }
+    return triplets;
+  }
+```
+
+
+
+Complexity Analysis:
+
+> Time complexity is O(n^2)
+>
+> Space complexity is oO(n)
+
+
+
+### Perfect Squares
+
+Problem:
+
+> Given a positive integer *n*, find the least number of perfect square numbers (for example, `1, 4, 9, 16, ...`) which sum to *n*.
+
+Solution 1:
+
+> Use BFS(广度优先算法). The first possible combination found will be the solution since BFS always find the nearst possible solution. 
+>
+> The possible combinations are the nuumber in the range [`1`,`sqrt(n)`] since anything larger than `sqrt(n)` will have a square larger than `n`.
+
+Java Code:
+
+```java
+public static int numSquares(int n) {
+        int a = (int) Math.sqrt(n);
+        if (a * a == n) return 1;
+        if (n <= 3) return n;
+
+        int[] squares = new int[a];
+        Queue<Integer> Q = new ArrayDeque<>();
+        Queue<Integer> newQ = new ArrayDeque<>();
+        Q.add(n);
+        int steps = 1;
+        while (!Q.isEmpty()){
+            	int num = Q.poll();
+          
+            for (int i = 1; i <= a; i++) {
+                int remain = num - i * i;
+              	
+              	if (remain < 0){
+                  break;
+                } else if (remain == 0) {
+                    return steps;
+                } else {
+                    newQ.add(remain);
+                } 
+            }
+            if (Q.isEmpty()){
+                steps ++;
+                Q = newQ;
+                newQ = new ArrayDeque<>();
+            }
+        }
+        return n;
+    }
+```
+
+Soluiton 2:
+
+> Use Dynamic Programing from the buttom-up. Form a map of solution from `1` to `n`, the solution of smaller number could be used in calculation in larger number. 
+
+Java Code:
+
+```java
+public static int numSquares(int n) {
+        int a = (int) Math.sqrt(n);
+        if (a * a == n) return 1;
+        int[] sln = new int[n+1];
+        Arrays.fill(sln,n);
+        sln[0]=0;
+        sln[1]=1;
+        
+        for(int i = 2; i<=n;i++){
+            for (int j = 1; j*j <= i; j++){
+                sln[i] = Math.min(sln[i],sln[i-j*j]+1);
+            }
+        }
+    return sln[n];
+    }
+```
+
+
+
+Solution 3: 
+
+> Use DFS(深度优先算法) and Dynamic Programming(动态规划) from the top-down. The first possbile combination found may not be the solution. It will likely end up finding all possbile solution. This may sounds inefficient but the advantage of using DFS is that we can using **Dynamaic Programming** to reduce the complexity. Most of the nodes are repetitive so by caching the result and reuse them, most of the recursions will be avoided.
+
+```java
+public static int numSquares(int n) {
+        int a = (int) Math.sqrt(n);
+        if (a * a == n) return 1;
+        
+        int[] sln = new int[n+1];
+        Arrays.fill(sln,Integer.MAX_VALUE);
+        
+        sln[0]=0;
+        sln[1]=1;
+        return numSquaresHelper(n,sln);
+    }
+    public static int numSquaresHelper(int n,int[] sln){
+        if (sln[n] == Integer.MAX_VALUE){
+            int MaxPossible = (int)Math.sqrt(n);
+            for (int i = 1; i<= MaxPossible;++i){
+                sln[n] =Math.min(sln[n],numSquaresHelper(n-i*i,sln)+1);
+            }
+        }
+        return sln[n];
+    }
+```
+
+
+
+### Find Missing Number:
+
+Problem:
+
+> Given an array of positive numbers from 1 to n, such that all numbers from 1 to n are present except one; find the missing number.
+
+
+
+Example:
+
+<img src="/Users/Yuehan/Library/Mobile Documents/com~apple~CloudDocs/CodeProblemsNote/img/img15.png" alt="img15" style="zoom:50%;" />
+
+Brainstrom:
+
+> A trival solution would takes O(n^2) time.
+>
+> A better solution is to sort the array firstly. Sorting the array would takes O(log n) time. We could do better.
+>
+> Given that all numbers from 1 to n except one is present, we could use the formula that calculate the sumation of numbers from 1 to n:
+>
+> ​																												(n * (n +1))  / 2
+
+
+
+Java Code:
+
+```java
+static int findMissing(List<Integer> input) {
+    int size = input.size()+1;
+    int total = ((size) * (size + 1)) / 2;
+    int sum = 0;
+  
+    for (int i: input) sum += i;
+
+    return total - sum;
+  }
+```
+
+
+
+Complexity Analysis:
+
+> The time complexity is O(n)
+>
+> The space complexity is O(1)
+
+
+
+### All Possible Combinations for a Given Sum
+
+Problem:
+
+> Given a positive interger, `target`, print all the possible combinations for this number using positive integers.
+
+
+
+Example:
+
+> if the given input is `4`, these are the possible combinations:
+>
+> > 1, 1, 1, 1
+> >
+> > 1, 1, 2
+> >
+> > 1, 3
+> >
+> > 2, 2
+
+
+
+BrainStorm:
+
+> Use a recursive function. Maintain an array named `currentCombo` to store the combination that is currently checked. Maintain an integer named `CurrentSum` to store the sum of the numvers in `currentCombo`. Maintain an integer `addNum` indicate the current number that will be added to the `currentCombo`
+>
+> `addNum` is initially `1` and `currentSum` is initially 0;
+>
+> 
+>
+> if`currentSum` == `target` , add the combination in `currentCombo` to the result list and return (go back to the previous layer)
+>
+> Loop Start:
+>
+> > if `addNum` + `currentCombo` <= `target`, call the function it self with `addNum` set to `1` and `addNum` added to`currentCombo`  and `currentSum`. after the nested function return, increase `addNum` by `1` and continues 
+> >
+> >  else, return (go back to the previous layer)
+
+
+
+```java
+  static ArrayList<ArrayList<Integer>> printAllSum(int target) {
+      ArrayList<ArrayList<Integer>> returnList = new ArrayList<ArrayList<Integer>>();
+      int currentSum = 0;
+      ArrayList<Integer> currentCombo = new ArrayList<Integer>(); 
+      printSumRec(target, 1,currentSum, currentCombo, returnList);
+      return returnList;
+  }
+
+  static void printSumRec(int target,int addNum, int currentSum, ArrayList<Integer> currentCombo, ArrayList<ArrayList<Integer>> returnList){
+      if (currentSum == target){
+        returnList.add((ArrayList)currentCombo.clone());
+        return;
+      }
+
+      while (addNum < target){
+          if (currentSum + addNum <= target){
+              currentCombo.add(addNum);
+              printSumRec(target, addNum, currentSum + addNum, currentCombo, returnList);
+              currentCombo.remove(currentCombo.size()-1);
+          } else {
+             
+              return;
+          }
+          addNum ++;
+      }
+      return;
+  }
+```
+
+
+
+Complexity Analysis:
+
+> The time complexity is O(n^2)
+>
+> The space complexity is O(n)
 
