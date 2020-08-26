@@ -1878,7 +1878,7 @@ Problem:
 
 Example:
 
-<img src="/Users/Yuehan/Library/Mobile Documents/com~apple~CloudDocs/CodeProblemsNote/img/img15.png" alt="img15" style="zoom:50%;" />
+<img src="./img/img15.png" alt="img15" style="zoom:50%;" />
 
 Brainstrom:
 
@@ -1993,4 +1993,188 @@ Complexity Analysis:
 > The time complexity is O(n^2)
 >
 > The space complexity is O(n)
+
+
+
+# Print All Permutations of a String
+
+Problem:
+
+> Implement a method to print all permutations of a given string without duplicates.For instance, all permutations of string “bad” are:
+
+<img src="./img/img16.png" alt="img16" style="zoom: 33%;" />
+
+Brainstorm:
+
+> For any given string with length `n`, there are `n` differnt first character options possible. Since each char of the string could be use as the fisrt char.
+>
+> Then if the first char is the `k`th char of the string, then there are `n-1` different second character options possible. The second char could be any char in the string except the `k`th char.
+>
+> So we can write a recursive function in this way. Use a loop to iterate through the string, for each iteration, use that char as the first char of the permutation and call the funtion itself with the remaining part of the string as input.
+
+
+
+Java Code:
+
+```java
+static List<String> permuteString(String input) {
+    List<String> result = new ArrayList<String>();
+    String head = "";
+    permuteStringRec(head, input, result);
+    return result;
+  }
+//recursive helper function	
+static void permuteStringRec(String head,String input, List<String> result){
+  if (input.length()==1){
+    result.add(head+input);
+    return;
+  }
+
+  for (int i = 0; i< input.length(); i++){
+    String[] swaped = swapChar(input,i);
+    permuteStringRec(head+swaped[0],swaped[1],result);
+  }
+}
+static String[] swapChar(String input,int i){
+  String head = input.substring(i,i+1);
+  String rest = input.substring(0,i) + input.substring(i+1,input.length());
+  String[] output = {head,rest};
+  return output;
+}
+```
+
+
+
+Complixity Analysis:
+
+> The time complexity is O(n!)
+>
+> The space complexixty is O(n!)
+
+
+
+### Find All Subsets of a Set
+
+Problem:
+
+> Given a set of interger. Find all possible subsets of this set of interger.
+
+
+
+Example:
+
+<img src="./img/img17.png" alt="img17" style="zoom:33%;" />
+
+Brainstorm:
+
+> For a set of `n` interger, the total number of subsets is `2^n`. But why?
+>
+>  Think about it in this way. if we increase the number of interger in the set by 1, how will the number of possible subsets increases? 
+>
+> Every original subset is still legal. And for each of them, you can add the new number to it to get a legal new subset. So the number of possible subsets will doubled.
+>
+> So we can have the conlusion that the totoal number of subsets is `2^n`
+
+
+
+Java Code:
+
+```java
+static void findAllSubsets(List<Integer> v, List<HashSet<Integer>> sets) {
+  int subsetCount = (int)Math.pow(2,v.size());
+  int setLength = v.size();
+  for (int i =0;i<subsetCount; i++){
+    HashSet<Integer> aSet= new HashSet<>();
+    for (int pos = 0; pos<setLength ; pos++){
+      if (getBit(pos,i)==1){
+        int digit = v.get(pos);
+        aSet.add(digit);
+      }
+    }
+    sets.add(aSet);
+  }
+}
+
+static int getBit(int position,int num){
+  int temp = 1 << position;
+  int result = temp & num;
+  if (result == 0) return 0;
+  else return 1;
+
+}
+```
+
+
+
+### Is String a Valid Number?
+
+Problem:
+
+> GIven an input string,determine if it makes a vilid number or not
+
+
+
+Example:
+
+<img src="./img/img18.png" alt="img18" style="zoom:25%;" />
+
+
+
+Brainstorm:
+
+> Use a state machine to approach this problem. The restrictions of a vaild number is as follow:
+>
+> >No more than one decimal point
+> >
+> >If start with 0, a decimal point should follow
+> >
+> >Should end at a decimal point
+
+
+
+Java Code:
+
+```java
+enum STATE {START,ZEROSTART, BEFORE,AT,AFTER, ERROR};
+
+static boolean isNumberValid(String s) {
+  STATE theState = STATE.START;
+  for(int i = 0;i<s.length();i++){
+    theState = nextState(theState, s.charAt(i));
+    if (theState == STATE.ERROR){
+      return false;
+    }
+  }
+  if (theState != STATE.AT) return true;
+  else return true;
+}
+static STATE nextState(STATE theState, char ch ){
+  switch (theState){
+    case START:
+      if (ch =='.') return STATE.AT;
+      else if (ch <= '9' && ch >= '1') return STATE.BEFORE;
+      else if (ch == '0') return STATE.ZEROSTART;
+      else return STATE.ERROR;
+    case ZEROSTART:
+      if (ch=='.') return STATE.AT;
+      else return STATE.ERROR;
+
+    case BEFORE:
+      if (ch =='.') return STATE.AT;
+      else if (ch <= '9' && ch >= '0') return STATE.BEFORE;
+      else return STATE.ERROR;
+    case AT:
+      if (ch <= '9' && ch >= '0') return STATE.AFTER;
+      else return STATE.ERROR;
+    case AFTER:
+      if (ch <= '9' && ch >= '0') return STATE.AFTER;
+      else return STATE.ERROR;
+    default:
+      return STATE.ERROR;
+
+  }
+}
+```
+
+
 
