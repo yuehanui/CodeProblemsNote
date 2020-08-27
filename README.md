@@ -1996,7 +1996,7 @@ Complexity Analysis:
 
 
 
-# Print All Permutations of a String
+### Print All Permutations of a String
 
 Problem:
 
@@ -2104,6 +2104,12 @@ static int getBit(int position,int num){
 }
 ```
 
+Complexity Analysis:
+
+> Time complexity O(2^n n)
+>
+> Space complexity O(2^n n)
+
 
 
 ### Is String a Valid Number?
@@ -2176,5 +2182,134 @@ static STATE nextState(STATE theState, char ch ){
 }
 ```
 
+Complexity Analysis:
+
+> Time complexity is O(n)
+>
+> Space complexity is O(1)
 
 
+
+### Calculate power of a number
+
+Problem:
+
+> Given a double `x` and an integer `n`, return `x` raised to the power of `n`
+
+
+
+Brainstorm:
+
+> A intuative solution would be simply multiply x by n time. But it has two shortages:
+>
+> 1. The time complexity would be O(n), not that good for such a simply problem.
+> 2. It doesn't work if `n` is negative, e.g `2^-3`.
+>
+> By using devide & conquer  mindset , we can solve this problem in O(log n) time.
+>
+> <img src="./img/img19.jpg" alt="img19" style="zoom:33%;" />
+>
+> If n is even, `2^n` equals to `2^(n/2)` * `2^(n/2)`.
+>
+> if n is odd, `2^n` equals to `2^(n/2)` * `2^(n/2)`  * n.
+
+
+
+Java code:
+
+```java
+static double power(double x, int n) {
+  if (x ==1) return 1;
+
+  boolean isNeg = false;
+  if (n<0){
+    isNeg = true;
+    n *= -1;
+  }
+
+  double ans = powerRec(x,n);
+
+  if (isNeg) return 1/ans;
+  else return ans;
+
+}
+
+static double powerRec(double x, int n){
+  //base case
+  if (n ==0) return 1;
+  if (n == 1) return x;
+
+  //recirsion
+  double temp = powerRec(x, n/2);
+  if (n %2 ==0) return temp *temp;
+  else return temp * temp * x;
+}
+```
+
+
+
+Complexity Analysis:
+
+> The time complexity is O(log n)
+>
+> The space complexity is O(log n)
+
+
+
+### Calculate Square Root of a Number
+
+Problem:
+
+> Given a positive double numver, return its squre root.
+
+
+
+Example:
+
+> Squre root of 17 is 4.123
+
+
+
+Brainstorm:
+
+> Use a apporach similar to binary search. We know that the squre root of a positive number  `n` lies between `0` and`n/2 +1`. We would set `low` to `0` and `high` to `n/2 +1`
+>
+> We start the loop by calculate the square of `mid`, which equals to `low` +`high`) / 2. 
+>
+> If the square of `mid` equals to the `n`,  we find the answer `mid`;
+>
+> Else, if the square of `mid` > the `n`, we then know that the squre root of n would lies between `low` and `mid`, so we set `high` to `mid` and repeat.
+>
+> Else, if  if the square of `mid` < the `n`, we then know that the squre root of n would lies between `mid` and `high`, so we set `low` to `mid` and repeat.
+
+
+
+Java Code:
+
+```java
+private static final double EPSILON = 0.000000000000001;
+
+public static double squareRoot(double num) {
+  double left = 0, right = num/2 + 1;
+
+  while (left < right){
+    double mid = (left + right) / 2;
+    double square = mid*mid;
+    double diff = Math.abs(square - num);
+    if (diff < EPSILON) return mid;
+    else if (square < num) left = mid;
+    else right = mid;
+  }
+  return -1;
+}
+```
+
+
+
+
+
+Complexity Analysis:
+
+> The time complexity is O(log n)
+>
+> The space complexity is O(1)
